@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     (r'^$', index),
     (r'^polls/', include('djangoweb.polls.urls')),
     (r'^accounts/', include('djangoweb.registration.urls')),
-    (r'^admin/(.*)', admin.site.root),
+    (r'^admin/(.*)', include(admin.site.urls)),
 )
 
 if settings.DEBUG:

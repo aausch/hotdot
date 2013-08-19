@@ -9,12 +9,24 @@ URLConf to include this URLConf for any URL beginning with
 
 
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 from views import activate
 from views import register
 
+
+class DirectTemplateView(TemplateView):
+    extra_context = None
+    def get_context_data(self, **kwargs):
+        context = super(self.__class__, self).get_context_data(**kwargs)
+        if self.extra_context is not None:
+            for key, value in self.extra_context.items():
+                if callable(value):
+                    context[key] = value()
+                else:
+                    context[key] = value
+        return context
 
 urlpatterns = patterns('',
                        # Activation keys get matched by \w+ instead of the more specific
@@ -53,8 +65,7 @@ urlpatterns = patterns('',
                            register,
                            {'template_name': 'create_account.html'},
                            name='registration_register'),
-                       url(r'^register/complete/$',
-                           direct_to_template,
-                           {'template': 'registration/registration_complete.html'},
-                           name='registration_complete'),
+		       url(r'^$', DirectTemplateView.as_view(
+				template_name='registration/registration_complete.html'),
+				name='registration_complete'),
                        )
