@@ -1,3 +1,7 @@
+Please note that Orbited is no longer being developed/maintained:
+http://stackoverflow.com/q/8834772/173773
+
+=========================================================
 Hotdot - Realtime webapp using Django + Orbited + Twisted
 =========================================================
 
